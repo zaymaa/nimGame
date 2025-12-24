@@ -1,0 +1,1074 @@
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.game-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f7fa;
+  overflow: hidden;
+}
+
+/* Sol Panel - Oyun Alanı */
+.game-left {
+  width: 45%;
+  background: #ffffff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.game-header h2 {
+  font-size: 28px;
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.restart-btn {
+  padding: 10px 20px;
+  border: 2px solid #27ae60;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #27ae60;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.restart-btn:hover {
+  background: #27ae60;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.restart-btn:active {
+  transform: translateY(0);
+}
+
+/* Oyun Durumu */
+.status-indicator {
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.status-indicator.player-turn {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: white;
+}
+
+.status-indicator.ai-turn {
+  background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+  color: white;
+}
+
+/* Çubuklar Konteyneri */
+.stones-container {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.stones-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stones-label {
+  font-size: 13px;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.stones-count {
+  font-size: 56px;
+  font-weight: 700;
+  color: #27ae60;
+  margin: 12px 0;
+  transition: all 0.3s ease;
+}
+
+.stones-visual {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 20px;
+  min-height: 60px;
+  align-items: center;
+}
+
+.stone {
+  font-size: 24px;
+  animation: stoneAppear 0.3s ease forwards;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease;
+}
+
+.stone:hover {
+  transform: scale(1.15) rotate(5deg);
+}
+
+/* Hamle Butonları */
+.move-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.move-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 16px 24px;
+  border: 2px solid #27ae60;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #27ae60;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.move-btn:hover:not(.disabled) {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.move-btn:active:not(.disabled) {
+  transform: translateY(0);
+}
+
+.move-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  border-color: #ddd;
+  color: #999;
+  box-shadow: none;
+}
+
+
+
+/* Oyun Geçmişi */
+.game-history {
+  margin-top: 10px;
+}
+
+.game-history h3 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.history-list {
+  max-height: 200px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.no-history {
+  text-align: center;
+  color: #95a5a6;
+  font-style: italic;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  animation: slideIn 0.3s ease;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.history-item:hover {
+  transform: translateX(3px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.history-player.player {
+  color: #27ae60;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.history-player.ai {
+  color: #e67e22;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.history-move {
+  color: #7f8c8d;
+  font-size: 14px;
+}
+
+.history-stones {
+  color: #95a5a6;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Sağ Panel - Algoritma Görselleştirme */
+.game-right {
+  width: 55%;
+  background: #ffffff;
+  padding: 40px;
+  overflow-x: auto;
+  overflow-y: auto;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
+  border-left: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+.minimax-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  overflow-x: visible; /* hidden yerine auto */
+  box-sizing: border-box;
+}
+
+.minimax-panel h3 {
+  font-size: 22px;
+  color: #2c3e50;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+/* Algoritma Switch */
+.algorithm-switch {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  background: #f8f9fa;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.switch-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #7f8c8d;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.switch-btn.active {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+}
+
+.switch-btn:hover:not(.active) {
+  background: #e8f5e9;
+  color: #27ae60;
+}
+
+/* İstatistik alanı */
+.stats-grid {
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  margin-bottom: 28px;
+  padding: 24px;
+  background: #f6f7f9;
+  border-radius: 22px;
+}
+
+/* Kart */
+.stat-card {
+  position: relative;
+  min-width: 320px;
+  padding: 15px 18px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, #ffffff 0%, #f3f4f6 100%);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover: zarif */
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Üst şerit (renk kimliği) */
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  width: 42px;
+  height: 6px;
+  border-radius: 4px;
+}
+
+/* Minimax */
+.stat-card.minimax::before {
+  background: linear-gradient(90deg, #ef4444, #fb7185);
+}
+
+/* AlphaBeta */
+.stat-card.alphabeta::before {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+/* Başlık */
+.stat-card h4 {
+  margin-top: 18px;
+  margin-bottom: 16px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #111827;
+}
+
+/* Satırlar */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 15px;
+  color: #4b5563;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+/* Sayılar */
+.stat-row strong {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+}
+
+
+.tree-container {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 5px;
+  max-height: 700px;
+  max-width: 100%;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  position: relative;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fullscreen Button */
+.tree-fullscreen-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(39, 174, 96, 0.9);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tree-fullscreen-btn:hover {
+  background: rgba(39, 174, 96, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+}
+
+.tree-fullscreen-btn:active {
+  transform: scale(0.95);
+}
+
+/* Tree Info */
+.tree-info {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2c3e50;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 5;
+}
+
+/* Fullscreen Modal */
+.tree-fullscreen-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tree-fullscreen-content {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  overflow: hidden;   /* sadece DIŞ çerçeve */
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.tree-fullscreen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 2px solid #e0e0e0;
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: white;
+}
+
+.tree-fullscreen-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.tree-fullscreen-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(39, 174, 96, 0.8);
+  color: white;
+  border: 2px solid rgba(39, 174, 96, 1);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  z-index: 10;
+}
+
+.tree-fullscreen-close:hover {
+  background: rgba(39, 174, 96, 1);
+  border-color: rgba(39, 174, 96, 1);
+  transform: rotate(90deg);
+}
+
+.tree-fullscreen-close:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+.tree-fullscreen-container {
+  flex: 1;
+  overflow: auto;
+  padding: 10px;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-height: 0;
+  position: relative;
+}
+
+.tree-fullscreen-container .minimax-tree {
+  padding: 20px;
+}
+
+.tree-fullscreen-container::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+.tree-fullscreen-container::-webkit-scrollbar-track {
+  background: #e9ecef;
+  border-radius: 10px;
+}
+
+.tree-fullscreen-container::-webkit-scrollbar-thumb {
+  background: #95a5a6;
+  border-radius: 10px;
+  border: 3px solid #e9ecef;
+}
+
+.tree-fullscreen-container::-webkit-scrollbar-thumb:hover {
+  background: #7f8c8d;
+}
+
+
+
+/* Animations */
+@keyframes thinking {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes stoneAppear {
+  from {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes stoneRemove {
+  from {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0) rotate(180deg);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes highlight {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(39, 174, 96, 0.4);
+  }
+  50% {
+    box-shadow: 0 6px 24px rgba(39, 174, 96, 0.6);
+  }
+}
+
+/* Scrollbar Styling */
+.game-left::-webkit-scrollbar,
+.game-right::-webkit-scrollbar,
+.history-list::-webkit-scrollbar,
+.tree-container::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.game-left::-webkit-scrollbar-track,
+.game-right::-webkit-scrollbar-track,
+.history-list::-webkit-scrollbar-track,
+.tree-container::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.game-left::-webkit-scrollbar-thumb,
+.game-right::-webkit-scrollbar-thumb,
+.history-list::-webkit-scrollbar-thumb,
+.tree-container::-webkit-scrollbar-thumb {
+  background: #bdc3c7;
+  border-radius: 10px;
+}
+
+.game-left::-webkit-scrollbar-thumb:hover,
+.game-right::-webkit-scrollbar-thumb:hover,
+.history-list::-webkit-scrollbar-thumb:hover,
+.tree-container::-webkit-scrollbar-thumb:hover {
+  background: #95a5a6;
+}
+
+/* Tree container için özel scrollbar */
+.tree-container::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.tree-container::-webkit-scrollbar-track {
+  background: #e9ecef;
+  border-radius: 10px;
+}
+
+.tree-container::-webkit-scrollbar-thumb {
+  background: #95a5a6;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+}
+
+.tree-container::-webkit-scrollbar-thumb:hover {
+  background: #7f8c8d;
+}
+
+.tree-container::-webkit-scrollbar-corner {
+  background: #e9ecef;
+}
+
+/* Panel Tabs */
+.panel-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab-btn {
+  padding: 12px 24px;
+  border: none;
+  background: transparent;
+  color: #7f8c8d;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tab-btn:hover {
+  color: #27ae60;
+  background: rgba(39, 174, 96, 0.05);
+}
+
+.tab-btn.active {
+  color: #27ae60;
+  border-bottom-color: #27ae60;
+  background: rgba(39, 174, 96, 0.05);
+}
+
+/* Performans Test Paneli */
+.performance-panel {
+  width: 100%;
+}
+
+.performance-panel h3 {
+  font-size: 22px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.performance-panel h4 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin: 24px 0 12px 0;
+  font-weight: 600;
+}
+
+
+
+.chart-container {
+  margin-bottom: 32px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.chart-container h4 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #2c3e50;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+
+
+/* === MINIMAX TREE (RECURSIVE STYLE) === */
+
+.minimax-tree {
+  display: flex;
+  justify-content: flex-start;   /* center ❌ */
+  align-items: flex-start;
+  padding: 10px 20px;
+  width: max-content;            /* %100 ❌ */
+  min-width: 100%;               /* viewport’tan küçükse dolsun */
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+
+.tree-node-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+  min-width: max-content;   /* fit-content ❌ */
+}
+
+
+.tree-node-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+
+/* Yukarıdan gelen çizgi (parent'tan node'a) */
+.tree-line-up {
+  width: 2px;
+  height: 12px;
+  background-color: #7f8c8d;
+  margin-bottom: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.tree-line-up.pruned-line {
+  background-color: #bdc3c7;
+  opacity: 0.4;
+}
+
+
+/* Aşağıya giden çizgi (node'dan children'a) */
+.tree-children-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2px;
+  width: max-content;
+  min-width: max-content;
+}
+
+.tree-line-down {
+  width: 2px;
+  height: 12px;
+  background-color: #7f8c8d;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.tree-line-down.pruned-line {
+  background-color: #bdc3c7;
+  opacity: 0.4;
+}
+
+/* Kardeşleri birleştiren yatay çizgi */
+.tree-children-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  position: relative;
+  margin-top: 0;
+  padding-top: 12px;
+  flex-wrap: nowrap;
+  width: fit-content;
+  min-width: fit-content;
+}
+
+/* Yatay çizgiyi ilk ve son çocuk arasında konumlandır (sadece birden fazla çocuk varsa) */
+.tree-children-row.has-siblings::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #7f8c8d;
+  z-index: 1;
+  width: 100%;
+}
+
+.tree-children-row.has-pruned::before {
+  background-color: #bdc3c7;
+  opacity: 0.4;
+}
+
+.tree-child-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+  min-width: fit-content;
+}
+
+/* Ortak düğüm */
+.tree-node-box {
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  padding: 3px 2px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 8px;
+  border: 1px solid transparent;
+  background: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  position: relative;
+  z-index: 3;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.tree-node-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+/* MAX / MIN renkleri */
+.max-node {
+  border-color: #27ae60;
+  background: linear-gradient(135deg, #eafff3, #f6fffb);
+  color: #1e8449;
+}
+
+.min-node {
+  border-color: #e67e22;
+  background: linear-gradient(135deg, #fff1e6, #fff9f4);
+  color: #d35400;
+}
+
+/* Şu anki durum */
+.current-node {
+  border-width: 3px;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(52, 152, 219, 0.5);
+  }
+}
+
+/* Budanan */
+.pruned-node {
+  opacity: 0.5;
+  background: repeating-linear-gradient(
+    45deg,
+    #ddd,
+    #ddd 6px,
+    #f5f5f5 6px,
+    #f5f5f5 12px
+  );
+  border-color: #aaa;
+  color: #7f8c8d;
+}
+
+/* İçerik */
+.node-title {
+  font-weight: bold;
+  margin-bottom: 2px;
+  font-size: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+.node-stones {
+  font-size: 10px;
+  font-weight: bold;
+  margin: 3px 0;
+}
+
+.node-score {
+  font-size: 6px;
+  padding: 2px 3px;
+  border-radius: 3px;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+.node-score.positive {
+  background: #d4f8e8;
+  color: #1e8449;
+}
+
+.node-score.negative {
+  background: #fdecea;
+  color: #922b21;
+}
+
+.node-score.neutral {
+  background: #eee;
+  color: #555;
+}
+
+.tree-node-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.tree-children-container {
+  position: relative;
+  margin-top: 24px;
+}
+
+
+.tree-children-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  position: relative;
+  padding-top: 20px;
+}
+
+.tree-children-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background-color: #666;
+}
+
+
+.tree-children-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background-color: #666;
+}
+
+
+.tree-child-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tree-child-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background-color: #666;
+}
+
+.game-left,
+.game-right {
+  min-height: 0;   /* DİKEY SCROLL'UN ANAHTARI */
+}

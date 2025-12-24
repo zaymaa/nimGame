@@ -1,0 +1,146 @@
+.intro-container {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 50%, #e67e22 100%);
+  background-size: 200% 200%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  animation: fadein 1s ease-in-out, gradientShift 8s ease infinite;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-container::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: backgroundMove 20s linear infinite;
+  pointer-events: none;
+}
+
+.intro-container h1 {
+  font-size: 56px;
+  margin-top: 30px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: titleAppear 1.2s ease-out 0.3s both;
+  position: relative;
+  z-index: 1;
+}
+
+.intro-container p {
+  font-size: 20px;
+  opacity: 0.95;
+  margin-top: 12px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  animation: subtitleAppear 1.2s ease-out 0.6s both;
+  position: relative;
+  z-index: 1;
+}
+
+/* Spinner */
+.spinner {
+  width: 80px;
+  height: 80px;
+  border: 8px solid rgba(255, 255, 255, 0.2);
+  border-top: 8px solid white;
+  border-right: 8px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: spin 1s linear infinite, spinnerPulse 2s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.spinner::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 0.5s linear infinite reverse;
+}
+
+/* Animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes backgroundMove {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(50px, 50px);
+  }
+}
+
+@keyframes titleAppear {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes subtitleAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 0.95;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spinnerPulse {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+  }
+}
